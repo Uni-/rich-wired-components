@@ -1,0 +1,172 @@
+<!DOCTYPE rwc>
+<rwc version="1.0" verlegacy="1.0">
+	<object id="form1">
+		<form />
+		<generic id="power1">
+			<source />
+			<set>
+				<arg name="type" value="direct" />
+				<arg name="voltage" value="5" />
+			</set>
+			<get>
+				<pin name="positive" origin="port1" />
+				<pin name="negative" origin="port2" />
+			</get>
+		</generic>
+		<generic id="part1">
+			<include name="template1" />
+			<set>
+				<arg name="color" value="wavelength(460n)" />
+			</set>
+			<get>
+				<pin name="positive" origin="template1-port1" />
+				<pin name="negative" origin="template1-port2" />
+				<pin name="front" origin="template1-port3" />
+				<pin name="back" origin="template1-port4" />
+			</get>
+		</generic>
+		<generic id="part2">
+			<include name="template1" />
+			<set>
+				<arg name="color" value="wavelength(580n)" />
+			</set>
+			<get>
+				<pin name="positive" origin="template1-port1" />
+				<pin name="negative" origin="template1-port2" />
+				<pin name="front" origin="template1-port3" />
+				<pin name="back" origin="template1-port4" />
+			</get>
+		</generic>
+		<generic id="ground1">
+			<ground />
+			<get>
+				<arg name="port1" />
+			</get>
+		</generic>
+		<wire id="wire1">
+			<node path="power1#positive" />
+			<node path="part1#positive" />
+			<node path="part2#positive" />
+		</wire>
+		<wire id="wire2">
+			<node path="power1#negative" />
+			<node path="part1#negative" />
+			<node path="part2#negative" />
+			<node path="ground#port1" />
+		</wire>
+		<wire id="wire3">
+			<node path="part1#front" />
+			<node path="part2#back" />
+		</wire>
+		<wire id="wire4">
+			<node path="part1#back" />
+			<node path="part2#front" />
+		</wire>
+		<actions>
+			<noise id="noise1" voltage-upbound="1" current-upbound="2m" frequency="0" />
+			<closure>
+				<param name="num_bridges" type="integer" default="2" forcedefault />
+			</closure>
+		</actions>
+	</object>
+	<object id="template1">
+		<template encapsule="no">
+			<get>
+				<param name="led_color" type="color" default="wavelength(500n)" />
+				<param name="weight" type="real" default="1.0" forcedefault />
+			</get>
+			<set>
+				<port id="template1-port1" />
+				<port id="template1-port2" />
+				<port id="template1-port3" />
+				<port id="template1-port4" />
+			</set>
+		</template>
+		<generic id="resistor1">
+			<resistor />
+			<set>
+				<arg name="resistance" value="20k" />
+			</set>
+			<get>
+				<pin name="port1" />
+				<pin name="port2" />
+			</get>
+		</generic>
+		<generic id="resistor2">
+			<resistor />
+			<set>
+				<arg name="resistance" value="150" />
+			</set>
+			<get>
+				<pin name="port1" />
+				<pin name="port2" />
+			</get>
+		</generic>
+		<generic id="capacitor1">
+			<capacitor />
+			<set>
+				<arg name="capacitance" value="20u" />
+			</set>
+			<get>
+				<pin name="port1" />
+				<pin name="port2" />
+			</get>
+		</generic>
+		<generic id="led1">
+			<led />
+			<set>
+				<arg name="color" value="@led_color" />
+				<arg name="voltage value=""2" />
+				<arg name="current" value="20m" />
+			</set>
+			<get>
+				<pin name="anode" origin="port1" />
+				<pin name="cathode" origin="port2" />
+			</get>
+		</generic>
+		<generic id="transistor1">
+			<transistor />
+			<set>
+				<arg name="type" value="npn" />
+				<arg name="Is" value="0" />
+				<arg name="Bfwd" value="100" />
+				<arg name="Brev" value="1" />
+				<arg name="Rc" value="1" />
+				<arg name="Rb" value="1" />
+				<arg name="Re" value="1" />
+			</set>
+			<get>
+				<pin name="collector" origin="port1" />
+				<pin name="base" origin="port2" />
+				<pin name="emitter" origin="port3" />
+			</get>
+		</generic>
+		<wire>
+			<node path="led1#anode" />
+			<node path="resistor1#port1" />
+			<note path="template1-port1" />
+		</wire>
+		<wire>
+			<node path="led1#cathode" />
+			<node path="resistor2#port1" />
+		</wire>
+		<wire>
+			<node path="reistor1#port2" />
+			<node path="capacitor1#port1" />
+			<node path="template1-port4" />
+		</wire>
+		<wire>
+			<node path="resistor2#port2" />
+			<node path="capacitor1#port2" />
+			<node path="transistor1#collector" />
+		</wire>
+		<wire>
+			<node path="transistor1#base" />
+			<node path="template1-port3" />
+		</wire>
+		<wire>
+			<node path="transistor1#emitter" />
+			<node path="template1-port2" />
+		</wire>
+	</object>
+</rwc>
