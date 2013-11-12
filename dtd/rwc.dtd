@@ -1,1 +1,106 @@
-<!ELEMENT rwc >
+<!--
+ - Rich Wired Components DTD
+ -
+ - https://github.com/Uni-/rich-wired-components
+ -->
+
+<!-- Entities -->
+
+<!ENTITY % Name "CDATA">
+<!ENTITY % ParamType "CDATA">
+<!ENTITY % ArgValue "CDATA">
+<!ENTITY % ComponentPath "CDATA">
+	<!-- RWPath module -->
+<!ENTITY % TrueFalse "(true|false)">
+	<!-- True or False value -->
+<!ENTITY % YesNo "(yes|no)">
+	<!-- Yes or No value -->
+
+<!ENTITY % generic.base "(CDATA
+	|source
+	|ground
+	|capacitor
+	|resistor
+	|led
+	|transistor
+	)">
+<!ENTITY % specific.base "(CDATA
+	)">
+
+<!-- Elements and attributes -->
+
+<!ELEMENT rwc (object*)>
+<!ATTLIST rwc
+	version	CDATA	#IMPLIED
+>
+
+<!ELEMENT object ((form|template),(generic|specific|wire)*)>
+<!ATTLIST object
+	id	ID	#IMPLIED
+>
+
+<!ELEMENT form EMPTY>
+
+<!ELEMENT template (get?,set?)>
+<!ATTLIST template
+	id	ID	#IMPLIED
+	encapsule %YesNo; 'no'
+>
+
+<!ELEMENT generic ((%generic.base;|include),((get,set?)|(set,get?))?)>
+<!ATTLIST generic
+	id	ID	#IMPLIED
+>
+
+<!ELEMENT specific ((%specific.base;|include),((get,set?)|(set,get?))?)>
+<!ATTLIST specific
+	id	ID	#IMPLIED
+>
+
+<!ELEMENT include EMPTY>
+<!ATTLIST include
+	name	%Name;	#REQUIRED
+>
+<!ELEMENT set (arg*|port*)>
+<!ELEMENT get (pin*|param*)>
+<!ELEMENT wire (node*)>
+<!ATTLIST wire
+	id	ID	#IMPLIED
+>
+
+<!ELEMENT arg EMPTY>
+<!ATTLIST arg
+	name	%Name;	#REQUIRED
+	value	%ArgValue; ""
+>
+
+<!ELEMENT param EMPTY>
+<!ATTLIST param
+	id	ID	#REQUIRED
+	type	%ParamType; #REQUIRED
+	default	%ArgValue; #REQUIRED
+	forcedefault %TrueFalse; "false"
+>
+
+<!ELEMENT pin EMPTY>
+<!ATTLIST pin
+	name	%Name;	#REQUIRED
+	origin	%Name;	#IMPLIED
+>
+
+<!ELEMENT port EMPTY>
+<!ATTLIST port
+	id	ID	#REQUIRED
+>
+
+<!ELEMENT node EMPTY>
+<!ATTLIST node
+	path	%ComponentPath; #REQUIRED
+>
+
+<!ELEMENT source EMPTY>
+<!ELEMENT ground EMPTY>
+<!ELEMENT capacitor EMPTY>
+<!ELEMENT resistor EMPTY>
+<!ELEMENT led EMPTY>
+<!ELEMENT transistor EMPTY>

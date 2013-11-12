@@ -1,5 +1,5 @@
 <!DOCTYPE rwc>
-<rwc version="1.0" verlegacy="1.0">
+<rwc version="1.0">
 	<object id="form1">
 		<form />
 		<generic id="power1">
@@ -40,7 +40,7 @@
 		<generic id="ground1">
 			<ground />
 			<get>
-				<arg name="port1" />
+				<pin name="port1" />
 			</get>
 		</generic>
 		<wire id="wire1">
@@ -61,19 +61,19 @@
 		<wire id="wire4">
 			<node path="part1#back" />
 			<node path="part2#front" />
-		</wire>
+		</wire><!--
 		<actions>
 			<noise id="noise1" voltage-upbound="1" current-upbound="2m" frequency="0" />
 			<closure>
 				<param name="num_bridges" type="integer" default="2" forcedefault="true" />
 			</closure>
-		</actions>
+		</actions>-->
 	</object>
 	<object id="template1">
 		<template encapsule="no">
 			<get>
-				<param name="led_color" type="color" default="wavelength(500n)" />
-				<param name="weight" type="real" default="1.0" forcedefault="true" />
+				<param id="led_color" type="color" default="wavelength(500n)" />
+				<param id="weight" type="real" default="1.0" forcedefault="true" />
 			</get>
 			<set>
 				<port id="template1-port1" />
@@ -144,7 +144,7 @@
 		<wire>
 			<node path="led1#anode" />
 			<node path="resistor1#port1" />
-			<note path="template1-port1" />
+			<node path="template1-port1" />
 		</wire>
 		<wire>
 			<node path="led1#cathode" />
