@@ -65,7 +65,7 @@
 		<actions>
 			<noise id="noise1" voltage-upbound="1" current-upbound="2m" frequency="0" />
 			<closure>
-				<param name="num_bridges" type="integer" default="2" forcedefault />
+				<param name="num_bridges" type="integer" default="2" forcedefault="true" />
 			</closure>
 		</actions>
 	</object>
@@ -73,7 +73,7 @@
 		<template encapsule="no">
 			<get>
 				<param name="led_color" type="color" default="wavelength(500n)" />
-				<param name="weight" type="real" default="1.0" forcedefault />
+				<param name="weight" type="real" default="1.0" forcedefault="true" />
 			</get>
 			<set>
 				<port id="template1-port1" />
@@ -116,7 +116,7 @@
 			<led />
 			<set>
 				<arg name="color" value="@led_color" />
-				<arg name="voltage value=""2" />
+				<arg name="voltage" value="2" />
 				<arg name="current" value="20m" />
 			</set>
 			<get>
