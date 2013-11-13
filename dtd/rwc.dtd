@@ -4,7 +4,18 @@
  - https://github.com/Uni-/rich-wired-components
  -->
 
-<!-- Entities -->
+<!--
+ - Table of Contents
+ -
+ - top entities
+ - root
+ - object.base
+ - object.impl
+ - interface
+ - object.impl.base
+ -->
+
+<!-- top entities -->
 
 <!ENTITY % Name "CDATA">
 <!ENTITY % ParamType "CDATA">
@@ -16,44 +27,67 @@
 <!ENTITY % YesNo "(yes|no)">
 	<!-- Yes or No value -->
 
-<!ENTITY % generic.base "(CDATA
-	|source
+<!ENTITY % generic.base "
+	(source
 	|ground
 	|capacitor
 	|resistor
 	|led
 	|transistor
 	)">
-<!ENTITY % specific.base "(CDATA
+<!ENTITY % specific.base "
+	(IC555
+	)">
+<!ENTITY % action.base "
+	(noise
 	)">
 
-<!-- Elements and attributes -->
+<!-- root -->
 
 <!ELEMENT rwc (object*)>
 <!ATTLIST rwc
 	version	CDATA	#IMPLIED
 >
 
-<!ELEMENT object ((form|template),(generic|specific|wire)*)>
+<!ENTITY % object.base "(form|template)">
+<!ENTITY % object.impl "(generic|specific|wire|action)*">
+
+<!ELEMENT object (%object.base;,%object.impl;)>
 <!ATTLIST object
 	id	ID	#IMPLIED
 >
 
+<!-- object.base -->
+
+<!ENTITY % interface "((get,set?)|(set,get?))?">
+
 <!ELEMENT form EMPTY>
 
-<!ELEMENT template (get?,set?)>
+<!ELEMENT template (%interface;)>
 <!ATTLIST template
 	id	ID	#IMPLIED
-	encapsule %YesNo; 'no'
+	encapsule %YesNo; "no"
 >
 
-<!ELEMENT generic ((%generic.base;|include),((get,set?)|(set,get?))?)>
+<!-- object.impl -->
+
+<!ELEMENT generic ((%generic.base;|include),%interface;)>
 <!ATTLIST generic
 	id	ID	#IMPLIED
 >
 
-<!ELEMENT specific ((%specific.base;|include),((get,set?)|(set,get?))?)>
+<!ELEMENT specific ((%specific.base;|include),%interface;)>
 <!ATTLIST specific
+	id	ID	#IMPLIED
+>
+
+<!ELEMENT action ((%action.base;|include),%interface;,closure?)>
+<!ATTLIST action
+	id	ID	#IMPLIED
+>
+
+<!ELEMENT wire (node*)>
+<!ATTLIST wire
 	id	ID	#IMPLIED
 >
 
@@ -61,17 +95,32 @@
 <!ATTLIST include
 	name	%Name;	#REQUIRED
 >
-<!ELEMENT set (arg*|port*)>
-<!ELEMENT get (pin*|param*)>
-<!ELEMENT wire (node*)>
-<!ATTLIST wire
-	id	ID	#IMPLIED
+
+<!ELEMENT using EMPTY>
+<!ATTLIST using
+	name	%Name;	#REQUIRED
 >
+
+<!ELEMENT node EMPTY>
+<!ATTLIST node
+	path	%ComponentPath; #REQUIRED
+>
+
+<!-- interface -->
+
+<!ELEMENT set (arg*|port*)>
+<!ELEMENT get (param*|pin*)>
+<!ELEMENT closure (var*)>
 
 <!ELEMENT arg EMPTY>
 <!ATTLIST arg
 	name	%Name;	#REQUIRED
 	value	%ArgValue; ""
+>
+
+<!ELEMENT port EMPTY>
+<!ATTLIST port
+	id	ID	#REQUIRED
 >
 
 <!ELEMENT param EMPTY>
@@ -88,15 +137,15 @@
 	origin	%Name;	#IMPLIED
 >
 
-<!ELEMENT port EMPTY>
-<!ATTLIST port
+<!ELEMENT var EMPTY>
+<!ATTLIST var
 	id	ID	#REQUIRED
+	type	%ParamType; #REQUIRED
+	default	%ArgValue; #REQUIRED
+	forcedefault %TrueFalse; "false"
 >
 
-<!ELEMENT node EMPTY>
-<!ATTLIST node
-	path	%ComponentPath; #REQUIRED
->
+<!-- object.impl.base -->
 
 <!ELEMENT source EMPTY>
 <!ELEMENT ground EMPTY>
@@ -104,3 +153,4 @@
 <!ELEMENT resistor EMPTY>
 <!ELEMENT led EMPTY>
 <!ELEMENT transistor EMPTY>
+<!ELEMENT noise EMPTY>

@@ -61,13 +61,18 @@
 		<wire id="wire4">
 			<node path="part1#back" />
 			<node path="part2#front" />
-		</wire><!--
-		<actions>
-			<noise id="noise1" voltage-upbound="1" current-upbound="2m" frequency="0" />
+		</wire>
+		<action id="noise1">
+			<noise />
+			<set>
+				<arg name="voltage-upbound" value="1"/>
+				<arg name="current-upbound" value="2m" />
+				<arg name="frequency" value="0" />
+			</set>
 			<closure>
-				<param name="num_bridges" type="integer" default="2" forcedefault="true" />
+				<var id="num_bridges" type="integer" default="2" forcedefault="true" />
 			</closure>
-		</actions>-->
+		</action>
 	</object>
 	<object id="template1">
 		<template encapsule="no">
